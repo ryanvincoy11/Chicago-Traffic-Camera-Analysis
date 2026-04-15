@@ -1,6 +1,3 @@
-#
-# header comment! Overview, name, etc.
-#
 import sqlite3
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
@@ -41,6 +38,13 @@ def print_stats(dbConn):
     row = dbCursor.fetchone()
     print("  Total Number of Speed Camera Violations:", f"{row[0]:,}")
 
+##################################################################  
+#
+# commandOne
+#
+# Given a connection to the database and name of an intersection, executes an
+# SQL querie to retrieve and output intersection
+#
 def commandOne(dbConn,userInput):
     dbCursor = dbConn.cursor()
     sql = """
@@ -56,6 +60,13 @@ def commandOne(dbConn,userInput):
     for row in rows:
         print(row[0], " : ", row[1])
 
+##################################################################  
+#
+# commandTwo
+#
+# Given a connection to the database and name of an intersection, executes two
+# SQL queries to retrieve and output all the cameras at the intersection 
+#
 def commandTwo(dbConn,userInput):
     dbCursor = dbConn.cursor()
     sql = """
@@ -94,6 +105,13 @@ def commandTwo(dbConn,userInput):
         for row in rows:
             print("  ", row[0], " : ", row[1])
 
+##################################################################  
+#
+# commandThree
+#
+# Given a connection to the database and a date of format: YYYY-MM-DD, executes an
+# SQL querie to retrieve and output the percentages of violations on that date
+#
 def commandThree(dbConn,userInput):
     dbCursor = dbConn.cursor()
     sql = """
@@ -112,7 +130,14 @@ def commandThree(dbConn,userInput):
         print("Number of Red Light Violations:", f"{red:,}", f"({red/total*100:.3f}%)")
         print("Number of Speed Violations:", f"{speed:,}", f"({speed/total*100:.3f}%)")
         print("Total Number of Violations: ", f"{total:,}")
-
+        
+##################################################################  
+#
+# commandFour
+#
+# Given a connection to the database, executes two
+# SQL queries to retrieve and output the number of cameras at each intersection
+#
 def commandFour(dbConn):
     dbCursor = dbConn.cursor()
     sqlred = """
@@ -141,6 +166,13 @@ def commandFour(dbConn):
     for row in rows:
         print(f"  {row[1]} ({row[0]}) : {row[2]} ({row[2]/row[3]*100:.3f}%)")
 
+##################################################################  
+#
+# commandFive
+#
+# Given a connection to the database and a year in the format: YYYY, executes two
+# SQL queries to retrieve and output the number of violations at each intersection
+#
 def commandFive(dbConn,userInput):
     dbCursor = dbConn.cursor()
     sqlred = """
@@ -188,6 +220,14 @@ def commandFive(dbConn,userInput):
         print("Total Speed Violations in",userInput, ":",f"{total:,}")
     print()
 
+##################################################################  
+#
+# commandSix
+#
+# Given a connection to the database, a camera ID, and a pyplot object, executes two
+# SQL queries to retrieve and output the number of violations by year for that camera.
+# The user will also have the option to plot that info on a graph
+#
 def commandSix(dbConn,userInput,plt):
     x=[]
     y=[]
@@ -249,7 +289,14 @@ def commandSix(dbConn,userInput,plt):
     if(i==2):
         print("No cameras matching that ID were found in the database.")
 
-
+##################################################################  
+#
+# commandSeven
+#
+# Given a connection to the database, a camera ID, year in the format: YYYY, and a pyplot object, executes an
+# SQL querie to retrieve and output the number of violations by month for that camera for that year.
+# The user will also have the option to plot that info on a graph
+#
 def commandSeven(dbConn,userInputA,plt):
     sql = """
     SELECT 'Red' AS CameraType FROM RedCameras WHERE Camera_ID = ?
@@ -304,8 +351,14 @@ def commandSeven(dbConn,userInputA,plt):
         plt.plot(x,y)
         plt.show()
     
-
-
+##################################################################  
+#
+# commandEight
+#
+# Given a connection to the database, a year in the format: YYYY, and a pyplot object, executes two
+# SQL queries to retrieve and output the number of violations for that year and compares them.
+# The user will also have the option to plot that info on a graph
+#
 def commandEight(dbConn,userInput,plt):
     plt.xlabel("Day")
     plt.ylabel("Number of Violations")
@@ -371,7 +424,14 @@ def commandEight(dbConn,userInput,plt):
         plt.legend()
         plt.show()
 
-
+##################################################################  
+#
+# commandNine
+#
+# Given a connection to the database, a street name, and a pyplot object, executes two
+# SQL queries to retrieve and output find all the cameras on that street
+# The user will also have the option to plot that info on a map of Chicago
+#
 def commandNine(dbConn,userInput,plt):
     dbCursor = dbConn.cursor()
     sqlred="""
